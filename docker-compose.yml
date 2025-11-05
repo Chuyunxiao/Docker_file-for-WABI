@@ -1,0 +1,38 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  orchestrator:
+    # Instruct Docker Compose to use the Dockerfile in the current directory to build the image
+    build: .
+    # Name the built image
+    image: langgraph-orchestrator
+    # Name the running container
+    # container_name: orchestrator-service
+    # Set the container to automatically restart on failure
+    restart: on-failure 
+    # Map port on the host to port on the container
+    ports:
+      - "2024:2024"
+    # Load environment variables from the .env file
+    env_file:
+      - .env
+    # Deployment-related configuration, including resource limits
+    deploy:
+      resources:
+        limits:
+          # Limit the container to 4GB of memory to prevent OOM failures from affecting the entire server
+          memory: 4G
+    command: >
+      sh -c "
+        echo '--- environment variable ---';
+        echo 'OpenAI Key (Last 5 digits):';
+        echo \"$OPENAI_API_KEY\" | tail -c 6;
+        echo 'DB Host:';
+        echo \"$DB_HOST\";
+        echo 'LangSmith Key (Last 5 digits):';
+        echo \"$LANGSMITH_API_KEY\" | tail -c 6;
+        echo '----------------------------------';
+        
+        langgraph dev --host 0.0.0.0 --port 2024
+      "

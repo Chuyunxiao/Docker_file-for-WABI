@@ -1,0 +1,35 @@
+# .dockerignore
+
+# Python cache and virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+
+# Git and IDE configuration
+.git/
+.gitignore
+.idea/
+.vscode/
+
+# Docker files
+Dockerfile
+.dockerignore
+
+# Sensitive information and local data
+.env
+*.db
+*.sqlite3
+
+# Tests and documentation (usually not needed in production images)
+tests/
+docs/
+
+# Build artifacts
+*.egg-info/
+build/
+dist/
